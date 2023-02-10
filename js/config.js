@@ -17,6 +17,7 @@ $(document).ready(function () {
 
     init.controls.addEventListener( 'change', function(){
         console.log("kkk....");
+        console.log('ARUN......');
         init.renderer.render(init.scene, init.cameraMain);           
     });
     refCube = new THREE.CubeTextureLoader()
