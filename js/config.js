@@ -29,6 +29,7 @@ $(document).ready(function () {
         init.renderer.domElement.addEventListener('pointerdown', onDocumentMouseDown, true);
         $('#backBtn').on('click',function(e){
             cameraAnim(e.target.id);
+            spriteVis(spriteArr,1000,1);
         });
 });
 let material = {
@@ -142,6 +143,7 @@ let onDocumentMouseDown = (event) =>{
     let intersects = raycaster.intersectObjects( spriteArr,true );  
     if ( intersects.length > 0 ) {
         SELECTED = intersects[ 0 ].object;
+        spriteVis(spriteArr,1000,0);
         cameraAnim(SELECTED.name);
     }    
 }
@@ -165,7 +167,17 @@ let cameraAnim = (data)=>{
         init.controls.target = init.camPoint.position;		
     }});
 }
-
+let spriteVis = (sprite,time,val) =>{
+    setTimeout(function(){
+        sprite.forEach(element => {
+            // init.scene.getObjectByName(element.name).material.opacity = 0; 
+            // init.scene.getObjectByName(element.name).visible = true;                 
+            TweenMax.to(init.scene.getObjectByName(element.name).material,.5,{opacity:val,onUpdate:function(){
+                init.scene.getObjectByName(element.name).material.needsUpdate = true;
+            }})
+         });
+     },time)      
+}
 class objLoad {
     constructor() {
 
