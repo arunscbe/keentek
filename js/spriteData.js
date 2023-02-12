@@ -1,19 +1,19 @@
 export let spriteData = [
    //FRIDGE-OPEN & CLOSE
     {
-        "src":"tex/sprite-R.png",
+        "src":"tex/largeRoom.png",
         "posX":-35,"posY":45,"posZ":0,
         "name":"largeRoom",
         "vis":true
     },
     {
-        "src":"tex/sprite-R.png",
+        "src":"tex/mediumRoom.png",
         "posX":60,"posY":45,"posZ":90,
         "name":"mediumRoom",
         "vis":true
     },
     {
-        "src":"tex/sprite-R.png",
+        "src":"tex/smallRoom.png",
         "posX":-35,"posY":45,"posZ":-80,
         "name":"smallRoom",
         "vis":true

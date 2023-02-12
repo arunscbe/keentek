@@ -104,7 +104,7 @@ console.log('---->');
                 this.spriteMat = new THREE.SpriteMaterial( { map: this.map } );
                 this.sprite = new THREE.Sprite(this.spriteMat);
                 this.sprite.position.set(element.posX,element.posY,element.posZ);
-                this.sprite.scale.set(15, 15, 15);
+                this.sprite.scale.set(80, 20, 0);
                 this.sprite.visible = element.vis;
                 this.sprite.name = element.name;
                 spriteArr.push(this.sprite);
