@@ -1,6 +1,7 @@
 import * as THREE from './libs/three.module.js'
 import { OrbitControls } from './libs/OrbitControls.js'
 import { GLTFLoader } from './libs/GLTFLoader.js'
+import { spriteData ,cameraData} from './spriteData.js';
 
 
 let init, roomLoad;
@@ -11,15 +12,13 @@ let texLoader = new THREE.TextureLoader();
 $(document).ready(function () {
 
     // init = new sceneSetup(80, 1, 5000, -30, 15, 0, 0x919191);
-    init = new sceneSetup(70, 1, 5000, 150, 150, -150, 0x919191);
+    init = new sceneSetup(70, 1, 5000, 150, 150, -150,spriteData);
     roomLoad = new objLoad();
     roomLoad.roomsModel();
 
-    init.controls.addEventListener( 'change', function(){
-        console.log("kkk....");
-        console.log('ARUN......');
+    /*init.controls.addEventListener( 'change', function(){
         init.renderer.render(init.scene, init.cameraMain);           
-    });
+    });*/
     refCube = new THREE.CubeTextureLoader()
         .setPath('img/02/')
         .load(['px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png']);
@@ -28,6 +27,9 @@ $(document).ready(function () {
         .load(['px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png']);
 
         init.renderer.domElement.addEventListener('pointerdown', onDocumentMouseDown, true);
+        $('#backBtn').on('click',function(e){
+            cameraAnim(e.target.id);
+        });
 });
 let material = {
 
@@ -48,14 +50,15 @@ let material = {
     }),
 }
 class sceneSetup {
-    constructor(FOV, near, far, x, y, z, ambientColor) {
-
+    constructor(FOV, near, far, x, y, z,spriteData) {
+console.log('---->');
         this.container = document.getElementById("container");
         this.scene = new THREE.Scene();
         this.addingCube();
         this.camera(FOV, near, far, x, y, z);
-        this.ambientLight(ambientColor);
-        // this.render();
+        this.ambientLight();
+        this.addSprites(spriteData);
+        this.render();
     }
     camera(FOV, near, far, x, y, z) {
         this.cameraMain = new THREE.PerspectiveCamera(FOV, this.container.offsetWidth / this.container.offsetHeight, near, far);
@@ -84,7 +87,8 @@ class sceneSetup {
         this.controls.maxDistance = 300;
          this.controls.maxPolarAngle = Math.PI / 2 * 100 / 120;
         //  this.controls.minPolarAngle = Math.PI / 2 * 80 / 120;
-        this.controls.target = new THREE.Vector3(0,0,0)
+        this.controls.target = new THREE.Vector3(this.camPoint.position.x, this.camPoint.position.y, this.camPoint.position.z);
+    
     }
     addingCube() {
         this.geo = new THREE.BoxBufferGeometry(.01, .01, .01);
@@ -92,6 +96,21 @@ class sceneSetup {
         this.camPoint = new THREE.Mesh(this.geo, this.mat);
         this.scene.add(this.camPoint);
         this.camPoint.position.set(0, 0, 0);
+    }
+    //SPRITES
+    addSprites(data){     
+            data.forEach((element,index) => {                
+                this.map = new THREE.TextureLoader().load( element.src );
+                this.spriteMat = new THREE.SpriteMaterial( { map: this.map } );
+                this.sprite = new THREE.Sprite(this.spriteMat);
+                this.sprite.position.set(element.posX,element.posY,element.posZ);
+                this.sprite.scale.set(15, 15, 15);
+                this.sprite.visible = element.vis;
+                this.sprite.name = element.name;
+                spriteArr.push(this.sprite);
+                this.scene.add( this.sprite );
+            });
+        
     }
     ambientLight(ambientColor) {
         this.ambiLight = new THREE.AmbientLight(0xffffff, .5);
@@ -104,14 +123,14 @@ class sceneSetup {
 
 
     }
-   /* animate() {
-        this.id = requestAnimationFrame(this.animate.bind(this));
+    animate() {
+        requestAnimationFrame(this.animate.bind(this));
         this.controls.update();
         this.renderer.render(this.scene, this.cameraMain);
     }
     render() {
         this.animate();
-    }*/
+    }
 }
 //RAYCASTING
 let onDocumentMouseDown = (event) =>{
@@ -123,7 +142,7 @@ let onDocumentMouseDown = (event) =>{
     let intersects = raycaster.intersectObjects( spriteArr,true );  
     if ( intersects.length > 0 ) {
         SELECTED = intersects[ 0 ].object;
-        // console.log(SELECTED);	
+        cameraAnim(SELECTED.name);
     }    
 }
 window.addEventListener('resize', onWindowResize, false);
@@ -136,6 +155,15 @@ function onWindowResize() {
         init.controls.update();
         init.renderer.render(init.scene, init.cameraMain);    
     }); 
+}
+
+let cameraAnim = (data)=>{
+    var mainData = cameraData[data];
+    TweenMax.to(init.camPoint.position,1,{x:mainData.cubePosX, y:mainData.cubePosY, z:mainData.cubePosZ,onUpdate:function(){}});
+    TweenMax.to(init.cameraMain.position,1,{x:mainData.camPosX, y:mainData.camPosY, z:mainData.camPosZ,onUpdate:function(){
+        init.cameraMain.updateProjectionMatrix();	
+        init.controls.target = init.camPoint.position;		
+    }});
 }
 
 class objLoad {
@@ -153,11 +181,11 @@ class objLoad {
             });
             this.mesh.scale.set(10, 10, 10);
              init.scene.add(this.mesh);
-             spriteArr.push(this.mesh);
-             requestAnimationFrame(()=>{
-                init.controls.update();
-                init.renderer.render(init.scene, init.cameraMain);    
-            }); 
+           
+            //  requestAnimationFrame(()=>{
+            //     init.controls.update();
+            //     init.renderer.render(init.scene, init.cameraMain);    
+            // }); 
         });
     }
 }
