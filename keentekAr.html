@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    </head>
+    <style>
+        .btn-container {
+            position: absolute;
+            bottom: 100px;
+            width: 100%;
+            text-align: center;
+        }
+        button {
+            border: none;
+            background: #edda73;
+            height: 25px;
+            width: 120px;
+            margin: 5px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+        }
+model-viewer {
+  background-color: #70bcd1;
+}
+    </style>
+    <body>
+        <model-viewer style="width: 500px; height: 500px; top: 0px;" 
+        id="keentek"
+        loading="eager" 
+        camera-controls auto-rotate 
+        src="./assets/tv.glb"
+        alt="Jacuzzi" 
+        ar-placement="wall"
+        ar ar-scale="fixed" 
+        shadow-intensity="1"       
+        ar-scale="auto"      
+        autoplay ar ar-modes="webxr scene-viewer quick-look"    
+        >
+      
+    </model-viewer>
+    </body>
+</html>
