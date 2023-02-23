@@ -1,6 +1,8 @@
 import * as THREE from './libs/three.module.js'
 import { OrbitControls } from './libs/OrbitControls.js'
+import { DRACOLoader } from './libs/DRACOLoader.js';
 import { GLTFLoader } from './libs/GLTFLoader.js'
+
 import { spriteData ,cameraData} from './spriteData.js';
 
 
@@ -9,13 +11,23 @@ let gltfpath = "assets/office.glb",  refCube, refCubeDrain;
 let spriteArr = [];
 let raycaster = new THREE.Raycaster(),mouse = new THREE.Vector2(),SELECTED;
 let texLoader = new THREE.TextureLoader();
+const manager = new THREE.LoadingManager();
 $(document).ready(function () {
 
     // init = new sceneSetup(80, 1, 5000, -30, 15, 0, 0x919191);
     init = new sceneSetup(70, 1, 5000, 150, 150, -150,spriteData);
+
+    manager.onStart = function ( url, itemsLoaded, itemsTotal ) {
+        console.log( 'Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );    
+    };    
+    manager.onLoad = function ( ) {    
+        console.log( 'Loading complete!');    
+    };   
     roomLoad = new objLoad();
     roomLoad.roomsModel();
 
+   
+    
     /*init.controls.addEventListener( 'change', function(){
         init.renderer.render(init.scene, init.cameraMain);           
     });*/
@@ -183,7 +195,10 @@ class objLoad {
 
     }
     roomsModel() {
-        this.loader = new GLTFLoader();
+        this.loader = new GLTFLoader(manager);
+        this.dracoLoader = new DRACOLoader();
+        this.dracoLoader.setDecoderPath("js/libs/draco/");//copypasted draco/gltf/all files in public folder
+        this.loader.setDRACOLoader( this.dracoLoader );
         this.loader.load(gltfpath, gltf => {
             this.mesh = gltf.scene;
             this.mesh.traverse(function (child) {
