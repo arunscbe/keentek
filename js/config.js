@@ -7,7 +7,7 @@ import { spriteData ,cameraData} from './spriteData.js';
 
 
 let init, roomLoad;
-let gltfpath = "assets/office.glb",  refCube, refCubeDrain;
+let gltfpath = "assets/office.glb";
 let spriteArr = [];
 let raycaster = new THREE.Raycaster(),mouse = new THREE.Vector2(),SELECTED;
 let texLoader = new THREE.TextureLoader();
@@ -31,10 +31,10 @@ $(document).ready(function () {
     /*init.controls.addEventListener( 'change', function(){
         init.renderer.render(init.scene, init.cameraMain);           
     });*/
-    refCube = new THREE.CubeTextureLoader()
+    const refCube = new THREE.CubeTextureLoader()
         .setPath('img/02/')
         .load(['px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png']);
-    refCubeDrain = new THREE.CubeTextureLoader()
+    const refCubeDrain = new THREE.CubeTextureLoader()
         .setPath('img/01/')
         .load(['px.png', 'nx.png', 'py.png', 'ny.png', 'pz.png', 'nz.png']);
 
@@ -86,7 +86,7 @@ console.log('---->');
     }
     rendering() {
         this.renderer = new THREE.WebGLRenderer({ antialias: true });
-        this.renderer.setClearColor(0xdbdbdb);
+        this.renderer.setClearColor(0xffffff);
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setSize(this.container.offsetWidth, this.container.offsetHeight);
         this.renderer.outputEncoding = THREE.sRGBEncoding;
@@ -203,7 +203,15 @@ class objLoad {
             this.mesh = gltf.scene;
             this.mesh.traverse(function (child) {
                 if (child.isMesh) {
-
+                    if(child.name === 'Shadow'){
+                        child.material = new THREE.MeshPhongMaterial({
+                            map : new THREE.TextureLoader().load('./tex/Shadow-Bake-01.png'),
+                            transparent:true,
+                        });
+                        child.position.z =.8;
+                        // child.material.map = 
+                        // child.transparent = true;
+                    }
                 }
             });
             this.mesh.scale.set(10, 10, 10);
