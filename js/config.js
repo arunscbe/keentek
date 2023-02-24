@@ -18,9 +18,11 @@ $(document).ready(function () {
     init = new sceneSetup(70, 1, 5000, 150, 150, -150,spriteData);
 
     manager.onStart = function ( url, itemsLoaded, itemsTotal ) {
+        $('.loaderContainer').show();
         console.log( 'Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );    
     };    
     manager.onLoad = function ( ) {    
+        $('.loaderContainer').fadeOut(1200);
         console.log( 'Loading complete!');    
     };   
     roomLoad = new objLoad();
