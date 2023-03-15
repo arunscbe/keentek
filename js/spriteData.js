@@ -37,3 +37,48 @@ export let cameraData = {
         "camPosX": 150,"camPosY": 150,"camPosZ": -150
     }
 }
+
+export const props = {
+    'smallRoom':{   
+        "first":{
+            "camera":'Poly studio X30',
+            "display":'TC8 -On Table'
+        },
+        "second":{
+            "camera":'Logitech Rally Bar mini',
+            "display":'Tap IP'
+        },
+        "third":{
+            "camera":'Yealink A20',
+            "display":'CTP 18'
+        }     
+    },
+    'mediumRoom':{   
+        "first":{
+            "camera":'Poly studio X50',
+            "display":'TC8'
+        },
+        "second":{
+            "camera":'Neat Bar',
+            "display":'Neat Pad'
+        },
+        "third":{
+            "camera":'Logitech Rally Bar',
+            "display":'Tap IP'
+        }     
+    },
+    'largeRoom':{   
+        "first":{
+            "camera":'Poly studio X70',
+            "display":'TC8'
+        },
+        "second":{
+            "camera":'Neat Bar pro',
+            "display":'Neat Pad'
+        },
+        "third":{
+            "camera":'',
+            "display":''
+        }     
+    },
+}

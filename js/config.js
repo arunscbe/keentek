@@ -3,7 +3,7 @@ import { OrbitControls } from './libs/OrbitControls.js'
 import { DRACOLoader } from './libs/DRACOLoader.js';
 import { GLTFLoader } from './libs/GLTFLoader.js'
 
-import { spriteData ,cameraData} from './spriteData.js';
+import { spriteData ,cameraData, props} from './spriteData.js';
 
 
 let init, roomLoad;
@@ -12,6 +12,8 @@ let spriteArr = [];
 let raycaster = new THREE.Raycaster(),mouse = new THREE.Vector2(),SELECTED;
 let texLoader = new THREE.TextureLoader();
 const manager = new THREE.LoadingManager();
+
+
 $(document).ready(function () {
 
     // init = new sceneSetup(80, 1, 5000, -30, 15, 0, 0x919191);
@@ -153,7 +155,7 @@ let onDocumentMouseDown = (event) =>{
     const rect = init.renderer.domElement.getBoundingClientRect(); 
     mouse.x = ( ( event.clientX - rect.left ) / ( rect.right - rect.left ) ) * 2 - 1;
     mouse.y = - ( ( event.clientY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;
-    raycaster.setFromCamera( mouse, init.cameraMain ); 
+    raycaster.setFromCamera( mouse, init.cameraMain );
     let intersects = raycaster.intersectObjects( spriteArr,true );  
     if ( intersects.length > 0 ) {
         SELECTED = intersects[ 0 ].object;
