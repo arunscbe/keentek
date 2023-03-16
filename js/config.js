@@ -12,7 +12,7 @@ let spriteArr = [];
 let raycaster = new THREE.Raycaster(),mouse = new THREE.Vector2(),SELECTED;
 let texLoader = new THREE.TextureLoader();
 const manager = new THREE.LoadingManager();
-
+let currentRoomSelection;
 
 $(document).ready(function () {
 
@@ -161,7 +161,7 @@ let onDocumentMouseDown = (event) =>{
         SELECTED = intersects[ 0 ].object;
         spriteVis(spriteArr,1000,0);
         cameraAnim(SELECTED.name);
-    }    
+        currentRoomSelection = SELECTED.name;    }    
 }
 window.addEventListener('resize', onWindowResize, false);
 
