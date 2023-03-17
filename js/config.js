@@ -53,11 +53,13 @@ $(document).ready(function () {
                if(currentProp != ''){
                     let _A = init.scene.getObjectByName(currentProp);
                         init.scene.remove(_A);
+                        spriteArr.pop();
                  }
                     _data = e.target.id;
                     propsUrl = props.smallRoom[_data].props;
                     roomLoad.propsLoad(propsUrl,_data);                
-            }        
+            }
+                   
         })
 });
 let material = {
@@ -160,18 +162,37 @@ let onDocumentMouseDown = (event) =>{
     let intersects = raycaster.intersectObjects( spriteArr,true );  
     if ( intersects.length > 0 ) {
         SELECTED = intersects[ 0 ].object;
-        if(SELECTED.type == 'Sprite'){
+            if(SELECTED.type == 'Sprite'){
             spriteVis(spriteArr,1000,0);
             cameraAnim(SELECTED.name);
             currentRoomSelection = SELECTED.name; 
         }else if(SELECTED.type == 'Mesh'){
-            console.log(SELECTED);
+            if(SELECTED.children != ''){
+                SELECTED.children[0].visible = true;
+                SELECTED.children[1].visible = true;
+            }
+            if(SELECTED.name.includes('R-Info')){
+                SELECTED.parent.children[2].visible = true;
+                SELECTED.parent.children[2].position.y=0;
+            }if(SELECTED.name.includes('Info')){
+                console.log('INFO-FLAG-CLICKED.....');
+            }
+           
         }
           
     }    
 }
 window.addEventListener('resize', onWindowResize, false);
-
+window.addEventListener('dblclick', ondblclick, false);
+function ondblclick(){
+    init.scene.traverse(function(child){
+        if(child.isMesh){
+            if(child.name.includes('Range')){
+                child.position.y=10;
+            }
+        }
+    });
+}
 function onWindowResize() {
     init.cameraMain.aspect = init.container.offsetWidth / init.container.offsetHeight;
     init.renderer.setSize(init.container.offsetWidth, init.container.offsetHeight);
@@ -239,18 +260,17 @@ class objLoad {
             this.mesh = gltf.scene;
             this.mesh.name = _data;
             currentProp = _data;
+            spriteArr.push(this.mesh);
             this.mesh.traverse(function (child) {
                 if (child.isMesh) {
-                    if(child.name.includes('Bar')){
-                        spriteArr.push(child);
-                    }
                     if(child.name.includes('Range')){
                         child.material.transparent = true;
-                        child.material.opacity = .3;
-                        child.scale.set(0,0,0);
+                        child.material.opacity = 0.3;
+                        child.visible = false;
+                        child.position.y=10;
                     }
                     if(child.name.includes('Info') || child.name.includes('R-Info')){
-                        child.scale.set(0,0,0);
+                        child.visible = false;
                     }
                 }
             });
