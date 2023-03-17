@@ -12,8 +12,8 @@ let spriteArr = [];
 let raycaster = new THREE.Raycaster(),mouse = new THREE.Vector2(),SELECTED;
 let texLoader = new THREE.TextureLoader();
 const manager = new THREE.LoadingManager();
-let currentRoomSelection;
-let propsUrl;
+let currentRoomSelection,currentProp='';
+let propsUrl,_data;
 $(document).ready(function () {
 
     // init = new sceneSetup(80, 1, 5000, -30, 15, 0, 0x919191);
@@ -49,22 +49,18 @@ $(document).ready(function () {
         });
 
         $('.smallRoom').on('click',function(e){
-            let _data = e.target.id;
-            propsUrl = props.smallRoom[_data].props;
-            roomLoad.propsLoad(propsUrl);
+            if(currentRoomSelection == 'smallRoom'){
+               if(currentProp != ''){
+                    let _A = init.scene.getObjectByName(currentProp);
+                        init.scene.remove(_A);
+                 }
+                    _data = e.target.id;
+                    propsUrl = props.smallRoom[_data].props;
+                    roomLoad.propsLoad(propsUrl,_data);                
+            }        
         })
 });
 let material = {
-
-    carBody: new THREE.MeshPhysicalMaterial({
-        clearcoat: 1.0,
-        clearcoatRoughness: 0.1,
-        //  metalness: 0.9,
-        //  roughness: 0.5,
-        color: 0x0000ff
-        //  normalMap: normalMap3,
-        //normalScale: new THREE.Vector2( 0.15, 0.15 )
-    }),
     cube: new THREE.MeshLambertMaterial({
         //   map:THREE.ImageUtils.loadTexture("assets/Road texture.png"),
         color: 0xffff00,
@@ -74,7 +70,6 @@ let material = {
 }
 class sceneSetup {
     constructor(FOV, near, far, x, y, z,spriteData) {
-console.log('---->');
         this.container = document.getElementById("container");
         this.scene = new THREE.Scene();
         this.addingCube();
@@ -165,9 +160,14 @@ let onDocumentMouseDown = (event) =>{
     let intersects = raycaster.intersectObjects( spriteArr,true );  
     if ( intersects.length > 0 ) {
         SELECTED = intersects[ 0 ].object;
-        spriteVis(spriteArr,1000,0);
-        cameraAnim(SELECTED.name);
-        currentRoomSelection = SELECTED.name;    }    
+        console.log();
+        if(SELECTED.type == 'sprite'){
+            spriteVis(spriteArr,1000,0);
+            cameraAnim(SELECTED.name);
+            currentRoomSelection = SELECTED.name; 
+        }
+          
+    }    
 }
 window.addEventListener('resize', onWindowResize, false);
 
@@ -232,12 +232,25 @@ class objLoad {
         });
     }
     propsLoad(){
-        console.log('----.>',propsUrl);
+        
         this.loader = new GLTFLoader();
         this.loader.load(propsUrl, gltf => {
             this.mesh = gltf.scene;
+            this.mesh.name = _data;
+            currentProp = _data;
             this.mesh.traverse(function (child) {
                 if (child.isMesh) {
+                    if(child.name.includes('Bar')){
+                        spriteArr.push(child);
+                       let meshSize = getMeshSize(child);
+                       let left = meshSize.x/2;
+                    }
+
+                    if(child.name.includes('Range')){
+                        child.material.transparent = true;
+                        child.material.opacity = .3;
+                        child.visible = false;
+                    }
                 }
             });
             this.mesh.scale.set(10, 10, 10);
@@ -248,5 +261,11 @@ class objLoad {
             //     init.renderer.render(init.scene, init.cameraMain);    
             // }); 
         });
+       
     }
+}
+const getMeshSize = (mesh) => {
+    let gltfbox = new THREE.Box3().setFromObject(mesh);
+    let gltfSize = gltfbox.getSize(new THREE.Vector3());
+    return gltfSize;
 }
