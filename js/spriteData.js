@@ -40,45 +40,36 @@ export let cameraData = {
 
 export const props = {
     'smallRoom':{   
-        "first":{
-            "camera":'Poly studio X30',
-            "display":'TC8 -On Table'
+        'SmallProps_PolyStudio_X30':{
+            'props':'SmallProps_PolyStudio_X30.glb'
         },
-        "second":{
-            "camera":'Logitech Rally Bar mini',
-            "display":'Tap IP'
+        'SmallProps_LogitechRally_BarMini':{
+            'props':'SmallProps_LogitechRally_BarMini.glb',           
         },
-        "third":{
-            "camera":'Yealink A20',
-            "display":'CTP 18'
+        'SmallProps_Yealink_A20':{
+            'props':'SmallProps_Yealink_A20.glb',           
         }     
     },
     'mediumRoom':{   
-        "first":{
-            "camera":'Poly studio X50',
-            "display":'TC8'
+        'MediumProps_Polystudio_x50':{
+            "props":'Poly studio X50.glb',           
         },
-        "second":{
-            "camera":'Neat Bar',
-            "display":'Neat Pad'
+        'MediumProps_Neatbar':{
+            "props":'MediumProps_Neatbar.glb',           
         },
-        "third":{
-            "camera":'Logitech Rally Bar',
-            "display":'Tap IP'
+        "MediumProps_LogitechRally_Bar":{
+            "props":'Logitech Rally Bar.glb',           
         }     
     },
     'largeRoom':{   
-        "first":{
-            "camera":'Poly studio X70',
-            "display":'TC8'
+        'LargeProps_PolyStudio_X70':{
+            'camera':'LargeProps_PolyStudio_X70.glb',
         },
-        "second":{
-            "camera":'Neat Bar pro',
-            "display":'Neat Pad'
+        'LargeProps_Neatbar_Pro':{
+            'camera':'LargeProps_Neatbar_Pro.glb',           
         },
-        "third":{
-            "camera":'',
-            "display":''
+        'LargeProps_Bar':{
+            'camera':'LargeProps_Bar.glb',            
         }     
     },
 }

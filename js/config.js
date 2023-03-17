@@ -213,8 +213,6 @@ class objLoad {
                             transparent:true,
                         });
                         child.position.z =.8;
-                        // child.material.map = 
-                        // child.transparent = true;
                     }
                 }
             });
