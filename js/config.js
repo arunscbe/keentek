@@ -13,7 +13,7 @@ let raycaster = new THREE.Raycaster(),mouse = new THREE.Vector2(),SELECTED;
 let texLoader = new THREE.TextureLoader();
 const manager = new THREE.LoadingManager();
 let currentRoomSelection;
-
+let propsUrl;
 $(document).ready(function () {
 
     // init = new sceneSetup(80, 1, 5000, -30, 15, 0, 0x919191);
@@ -47,6 +47,12 @@ $(document).ready(function () {
             cameraAnim(e.target.id);
             spriteVis(spriteArr,1000,1);
         });
+
+        $('.smallRoom').on('click',function(e){
+            let _data = e.target.id;
+            propsUrl = props.smallRoom[_data].props;
+            roomLoad.propsLoad(propsUrl);
+        })
 });
 let material = {
 
@@ -214,6 +220,24 @@ class objLoad {
                         });
                         child.position.z =.8;
                     }
+                }
+            });
+            this.mesh.scale.set(10, 10, 10);
+             init.scene.add(this.mesh);
+           
+            //  requestAnimationFrame(()=>{
+            //     init.controls.update();
+            //     init.renderer.render(init.scene, init.cameraMain);    
+            // }); 
+        });
+    }
+    propsLoad(){
+        console.log('----.>',propsUrl);
+        this.loader = new GLTFLoader();
+        this.loader.load(propsUrl, gltf => {
+            this.mesh = gltf.scene;
+            this.mesh.traverse(function (child) {
+                if (child.isMesh) {
                 }
             });
             this.mesh.scale.set(10, 10, 10);
