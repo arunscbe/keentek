@@ -160,11 +160,12 @@ let onDocumentMouseDown = (event) =>{
     let intersects = raycaster.intersectObjects( spriteArr,true );  
     if ( intersects.length > 0 ) {
         SELECTED = intersects[ 0 ].object;
-        console.log();
-        if(SELECTED.type == 'sprite'){
+        if(SELECTED.type == 'Sprite'){
             spriteVis(spriteArr,1000,0);
             cameraAnim(SELECTED.name);
             currentRoomSelection = SELECTED.name; 
+        }else if(SELECTED.type == 'Mesh'){
+            console.log(SELECTED);
         }
           
     }    
@@ -242,14 +243,14 @@ class objLoad {
                 if (child.isMesh) {
                     if(child.name.includes('Bar')){
                         spriteArr.push(child);
-                       let meshSize = getMeshSize(child);
-                       let left = meshSize.x/2;
                     }
-
                     if(child.name.includes('Range')){
                         child.material.transparent = true;
                         child.material.opacity = .3;
-                        child.visible = false;
+                        child.scale.set(0,0,0);
+                    }
+                    if(child.name.includes('Info') || child.name.includes('R-Info')){
+                        child.scale.set(0,0,0);
                     }
                 }
             });
