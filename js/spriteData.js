@@ -61,15 +61,15 @@ export const props = {
             "props":'assets/props/medium_room/MediumProps_LogitechRally_Bar.glb',           
         }     
     },
-    // 'largeRoom':{   
-    //     'LargeProps_PolyStudio_X70':{
-    //         'camera':'LargeProps_PolyStudio_X70.glb',
-    //     },
-    //     'LargeProps_Neatbar_Pro':{
-    //         'camera':'LargeProps_Neatbar_Pro.glb',           
-    //     },
-    //     'LargeProps_Bar':{
-    //         'camera':'LargeProps_Bar.glb',            
-    //     }     
-    // },
+    'largeRoom':{   
+        'LargeProps_PolyStudio_X70':{
+            'props':'assets/props/large_room/LargeProps_PolyStudio_X70.glb',
+        },
+        'LargeProps_Neatbar_Pro':{
+            'props':'assets/props/large_room/LargeProps_Neatbar_Pro.glb',           
+        },
+        'LargeProps_Bar':{
+            'props':'assets/props/large_room/LargeProps_Bar.glb',            
+        }     
+    },
 }

@@ -12,8 +12,8 @@ let spriteArr = [],mediumArr = [],largeArr = [];
 let raycaster = new THREE.Raycaster(),mouse = new THREE.Vector2(),SELECTED;
 let texLoader = new THREE.TextureLoader();
 const manager = new THREE.LoadingManager();
-let currentRoomSelection,currentProp='';
-let propsUrl,_data;
+let currentRoomSelection ='',currentProp='';
+let propsUrl,_data,intersects;
 $(document).ready(function () {
 
     // init = new sceneSetup(80, 1, 5000, -30, 15, 0, 0x919191);
@@ -50,8 +50,13 @@ $(document).ready(function () {
         });
 
         $('.smallRoom').on('click',function(e){
-            changeProps('smallRoom',spriteArr,e.target.id);
-                   
+            changeProps('smallRoom',spriteArr,e.target.id);                   
+        })
+        $('.mediumRoom').on('click',function(e){
+            changeProps('mediumRoom',mediumArr,e.target.id);                   
+        })
+        $('.largeRoom').on('click',function(e){
+            changeProps('largeRoom',largeArr,e.target.id);                   
         })
         function changeProps(room,array,id){
             if(currentRoomSelection == room){
@@ -163,7 +168,9 @@ let onDocumentMouseDown = (event) =>{
     mouse.x = ( ( event.clientX - rect.left ) / ( rect.right - rect.left ) ) * 2 - 1;
     mouse.y = - ( ( event.clientY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;
     raycaster.setFromCamera( mouse, init.cameraMain );
-    let intersects = raycaster.intersectObjects( spriteArr,true );  
+    if(currentRoomSelection === 'smallRoom' || currentRoomSelection === '')intersects = raycaster.intersectObjects( spriteArr,true );  
+    else if(currentRoomSelection === 'mediumRoom')intersects = raycaster.intersectObjects( mediumArr,true ); 
+    else if(currentRoomSelection === 'largeRoom')intersects = raycaster.intersectObjects( largeArr,true ); 
     if ( intersects.length > 0 ) {
         SELECTED = intersects[ 0 ].object;
             if(SELECTED.type == 'Sprite'){
@@ -194,6 +201,7 @@ function ondblclick(){
     init.scene.traverse(function(child){
         if(child.isMesh){
             if(child.name.includes('Range')){
+                console.log('YES...',child);
                 child.position.y=10;
             }
         }
