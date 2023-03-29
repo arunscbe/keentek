@@ -8,7 +8,7 @@ import { spriteData ,cameraData, props} from './spriteData.js';
 
 let init, roomLoad;
 let gltfpath = "assets/office.glb";
-let spriteArr = [];
+let spriteArr = [],mediumArr = [],largeArr = [];
 let raycaster = new THREE.Raycaster(),mouse = new THREE.Vector2(),SELECTED;
 let texLoader = new THREE.TextureLoader();
 const manager = new THREE.LoadingManager();
@@ -46,21 +46,25 @@ $(document).ready(function () {
         $('#backBtn').on('click',function(e){
             cameraAnim(e.target.id);
             spriteVis(spriteArr,1000,1);
+            currentRoomSelection = '';
         });
 
         $('.smallRoom').on('click',function(e){
-            if(currentRoomSelection == 'smallRoom'){
-               if(currentProp != ''){
-                    let _A = init.scene.getObjectByName(currentProp);
-                        init.scene.remove(_A);
-                        spriteArr.pop();
-                 }
-                    _data = e.target.id;
-                    propsUrl = props.smallRoom[_data].props;
-                    roomLoad.propsLoad(propsUrl,_data);                
-            }
+            changeProps('smallRoom',spriteArr,e.target.id);
                    
         })
+        function changeProps(room,array,id){
+            if(currentRoomSelection == room){
+                if(currentProp != ''){
+                     let _A = init.scene.getObjectByName(currentProp);
+                         init.scene.remove(_A);
+                         array.pop();
+                  }
+                     _data = id;
+                     propsUrl = props[room][_data].props;
+                     roomLoad.propsLoad(propsUrl,_data);                
+             }
+        }
 });
 let material = {
     cube: new THREE.MeshLambertMaterial({
@@ -163,10 +167,11 @@ let onDocumentMouseDown = (event) =>{
     if ( intersects.length > 0 ) {
         SELECTED = intersects[ 0 ].object;
             if(SELECTED.type == 'Sprite'){
-            spriteVis(spriteArr,1000,0);
-            cameraAnim(SELECTED.name);
-            currentRoomSelection = SELECTED.name; 
-        }else if(SELECTED.type == 'Mesh'){
+                spriteVis(spriteArr,1000,0);
+                cameraAnim(SELECTED.name);
+                currentRoomSelection = SELECTED.name; 
+              }else if(SELECTED.type == 'Mesh'){
+                console.log('SELECTED-->',SELECTED);
             if(SELECTED.children != ''){
                 SELECTED.children[0].visible = true;
                 SELECTED.children[1].visible = true;
@@ -182,6 +187,7 @@ let onDocumentMouseDown = (event) =>{
           
     }    
 }
+
 window.addEventListener('resize', onWindowResize, false);
 window.addEventListener('dblclick', ondblclick, false);
 function ondblclick(){
@@ -261,7 +267,9 @@ class objLoad {
             this.mesh.name = _data;
             currentProp = _data;
             spriteArr.push(this.mesh);
-            if(currentRoomSelection == 'small_room')spriteArr.push(this.mesh);
+            if(currentRoomSelection == 'smallRoom')spriteArr.push(this.mesh);
+            else if(currentRoomSelection == 'mediumRoom')mediumArr.push(this.mesh);
+            else if(currentRoomSelection == 'largeRoom')largeArr.push(this.mesh);
             this.mesh.traverse(function (child) {
                 if (child.isMesh) {
                     if(child.name.includes('Range')){
