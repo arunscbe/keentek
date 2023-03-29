@@ -50,17 +50,17 @@ export const props = {
             'props':'assets/props/small_room/SmallProps_Yealink_A20.glb',           
         }     
     },
-    // 'mediumRoom':{   
-    //     'MediumProps_Polystudio_x50':{
-    //         "props":'Poly studio X50.glb',           
-    //     },
-    //     'MediumProps_Neatbar':{
-    //         "props":'MediumProps_Neatbar.glb',           
-    //     },
-    //     "MediumProps_LogitechRally_Bar":{
-    //         "props":'Logitech Rally Bar.glb',           
-    //     }     
-    // },
+    'mediumRoom':{   
+        'MediumProps_Polystudio_x50':{
+            "props":'assets/props/medium_room/MediumProps_Polystudio_x50.glb',           
+        },
+        'MediumProps_Neatbar':{
+            "props":'assets/props/medium_room/MediumProps_Neatbar.glb',           
+        },
+        "MediumProps_LogitechRally_Bar":{
+            "props":'assets/props/medium_room/MediumProps_LogitechRally_Bar.glb',           
+        }     
+    },
     // 'largeRoom':{   
     //     'LargeProps_PolyStudio_X70':{
     //         'camera':'LargeProps_PolyStudio_X70.glb',

@@ -261,6 +261,7 @@ class objLoad {
             this.mesh.name = _data;
             currentProp = _data;
             spriteArr.push(this.mesh);
+            if(currentRoomSelection == 'small_room')spriteArr.push(this.mesh);
             this.mesh.traverse(function (child) {
                 if (child.isMesh) {
                     if(child.name.includes('Range')){
