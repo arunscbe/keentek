@@ -47,6 +47,7 @@ $(document).ready(function () {
             cameraAnim(e.target.id);
             spriteVis(spriteArr,1000,1);
             currentRoomSelection = '';
+            cameraLimit(5,300);
         });
 
         $('.smallRoom').on('click',function(e){
@@ -164,31 +165,31 @@ class sceneSetup {
 //RAYCASTING
 let onDocumentMouseDown = (event) =>{
     event.preventDefault();
+    console.log('current-Room',currentRoomSelection);
     const rect = init.renderer.domElement.getBoundingClientRect(); 
     mouse.x = ( ( event.clientX - rect.left ) / ( rect.right - rect.left ) ) * 2 - 1;
     mouse.y = - ( ( event.clientY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;
     raycaster.setFromCamera( mouse, init.cameraMain );
     if(currentRoomSelection === 'smallRoom' || currentRoomSelection === '')intersects = raycaster.intersectObjects( spriteArr,true );  
-    else if(currentRoomSelection === 'mediumRoom')intersects = raycaster.intersectObjects( mediumArr,true ); 
-    else if(currentRoomSelection === 'largeRoom')intersects = raycaster.intersectObjects( largeArr,true ); 
+    else if(currentRoomSelection === 'mediumRoom')intersects = raycaster.intersectObjects( mediumArr,true );     
+    else if(currentRoomSelection === 'largeRoom')intersects = raycaster.intersectObjects( largeArr,true );    
     if ( intersects.length > 0 ) {
         SELECTED = intersects[ 0 ].object;
             if(SELECTED.type == 'Sprite'){
-                spriteVis(spriteArr,1000,0);
-                cameraAnim(SELECTED.name);
-                currentRoomSelection = SELECTED.name; 
+                    spriteVis(spriteArr,1000,0);
+                    cameraAnim(SELECTED.name);
+                    currentRoomSelection = SELECTED.name; 
               }else if(SELECTED.type == 'Mesh'){
-                console.log('SELECTED-->',SELECTED);
-            if(SELECTED.children != ''){
-                SELECTED.children[0].visible = true;
-                SELECTED.children[1].visible = true;
-            }
-            if(SELECTED.name.includes('R-Info')){
-                SELECTED.parent.children[2].visible = true;
-                SELECTED.parent.children[2].position.y=0;
-            }if(SELECTED.name.includes('Info')){
-                console.log('INFO-FLAG-CLICKED.....');
-            }
+                    if(SELECTED.children != ''){
+                        SELECTED.children[0].visible = true;
+                        SELECTED.children[1].visible = true;
+                    }
+                    if(SELECTED.name.includes('R-Info')){
+                        SELECTED.parent.children[2].material.opacity = 0.3;
+                        SELECTED.parent.children[2].position.y=0;
+                    }if(SELECTED.name.includes('Info')){
+                        console.log('INFO-FLAG-CLICKED.....');
+                    }
            
         }
           
@@ -201,8 +202,9 @@ function ondblclick(){
     init.scene.traverse(function(child){
         if(child.isMesh){
             if(child.name.includes('Range')){
-                console.log('YES...',child);
-                child.position.y=10;
+                // console.log('YES...',child);
+                child.position.y = 10;
+                child.opacity = 0;
             }
         }
     });
@@ -223,6 +225,11 @@ let cameraAnim = (data)=>{
     TweenMax.to(init.cameraMain.position,1,{x:mainData.camPosX, y:mainData.camPosY, z:mainData.camPosZ,onUpdate:function(){
         init.cameraMain.updateProjectionMatrix();	
         init.controls.target = init.camPoint.position;		
+    },onComplete:function(){
+        if(currentRoomSelection === '')cameraLimit(5,300);
+        else if(currentRoomSelection === 'smallRoom')cameraLimit(5,20);
+        else if(currentRoomSelection === 'mediumRoom')cameraLimit(5,22);
+        else if(currentRoomSelection === 'largeRoom')cameraLimit(5,38);
     }});
 }
 let spriteVis = (sprite,time,val) =>{
@@ -235,6 +242,10 @@ let spriteVis = (sprite,time,val) =>{
             }})
          });
      },time)      
+}
+const cameraLimit = (min,max) => {
+    init.controls.minDistance = min;
+    init.controls.maxDistance = max;
 }
 class objLoad {
     constructor() {
@@ -281,12 +292,14 @@ class objLoad {
             this.mesh.traverse(function (child) {
                 if (child.isMesh) {
                     if(child.name.includes('Range')){
+                        // console.log('CHILD-->',child);
                         child.material.transparent = true;
                         child.material.opacity = 0.3;
-                        child.visible = false;
-                        child.position.y=10;
+                        //child.visible = false;
+                        //  child.position.y=10;
                     }
                     if(child.name.includes('Info') || child.name.includes('R-Info')){
+                        console.log('INFO-R-Info-->',child);
                         child.visible = false;
                     }
                 }
