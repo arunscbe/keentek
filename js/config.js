@@ -8,7 +8,7 @@ import { spriteData ,cameraData, props} from './spriteData.js';
 
 let init, roomLoad;
 let gltfpath = "assets/office.glb";
-let spriteArr = [],mediumArr = [],largeArr = [];
+let spriteArr = [],smallArr=[],mediumArr = [],largeArr = [];
 let raycaster = new THREE.Raycaster(),mouse = new THREE.Vector2(),SELECTED;
 let texLoader = new THREE.TextureLoader();
 const manager = new THREE.LoadingManager();
@@ -51,7 +51,7 @@ $(document).ready(function () {
         });
 
         $('.smallRoom').on('click',function(e){
-            changeProps('smallRoom',spriteArr,e.target.id);                   
+            changeProps('smallRoom',smallArr,e.target.id);                   
         })
         $('.mediumRoom').on('click',function(e){
             changeProps('mediumRoom',mediumArr,e.target.id);                   
@@ -165,14 +165,14 @@ class sceneSetup {
 //RAYCASTING
 let onDocumentMouseDown = (event) =>{
     event.preventDefault();
-    console.log('current-Room',currentRoomSelection);
     const rect = init.renderer.domElement.getBoundingClientRect(); 
     mouse.x = ( ( event.clientX - rect.left ) / ( rect.right - rect.left ) ) * 2 - 1;
     mouse.y = - ( ( event.clientY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;
     raycaster.setFromCamera( mouse, init.cameraMain );
-    if(currentRoomSelection === 'smallRoom' || currentRoomSelection === '')intersects = raycaster.intersectObjects( spriteArr,true );  
-    else if(currentRoomSelection === 'mediumRoom')intersects = raycaster.intersectObjects( mediumArr,true );     
-    else if(currentRoomSelection === 'largeRoom')intersects = raycaster.intersectObjects( largeArr,true );    
+    if(currentRoomSelection === '')intersects = raycaster.intersectObjects( spriteArr,true );
+     if(currentRoomSelection === 'smallRoom' )intersects = raycaster.intersectObjects( smallArr,true );
+     if(currentRoomSelection === 'mediumRoom')intersects = raycaster.intersectObjects( mediumArr,true );     
+     if(currentRoomSelection === 'largeRoom')intersects = raycaster.intersectObjects( largeArr,true );    
     if ( intersects.length > 0 ) {
         SELECTED = intersects[ 0 ].object;
             if(SELECTED.type == 'Sprite'){
@@ -180,16 +180,48 @@ let onDocumentMouseDown = (event) =>{
                     cameraAnim(SELECTED.name);
                     currentRoomSelection = SELECTED.name; 
               }else if(SELECTED.type == 'Mesh'){
-                    if(SELECTED.children != ''){
-                        SELECTED.children[0].visible = true;
-                        SELECTED.children[1].visible = true;
-                    }
-                    if(SELECTED.name.includes('R-Info')){
-                        SELECTED.parent.children[2].material.opacity = 0.3;
-                        SELECTED.parent.children[2].position.y=0;
-                    }if(SELECTED.name.includes('Info')){
+                console.log( SELECTED);
+                    if(SELECTED.children.length != 0){                    
+                         SELECTED.children[0].visible = true;
+                         SELECTED.children[1].visible = true;
+                    }else if(SELECTED.name.includes('R-Info')){
+                        console.log( SELECTED.parent.children[2]);
+                        // SELECTED.parent.children[2].visible = true;
+                        // SELECTED.parent.children[2].position.y = 0;
+                        SELECTED.parent.children[2].position.y = 0;
+                    }else if(SELECTED.name.includes('Info')){
                         console.log('INFO-FLAG-CLICKED.....');
                     }
+                    /* if(SELECTED.children !== '' ){
+                        
+                        // if(SELECTED.children[0].name.includes('Info') && SELECTED.children[1].name.includes('R-Info')){
+                            SELECTED.traverse(function(child){
+                                if(child.isMesh){
+                                    if(child.name.includes('R-Info') || child.name.includes('Info') ){
+                                      child.visible = true;
+                                    }
+                                }
+                            });
+                         }
+                       
+                        // SELECTED.children[0].scale.x = 100;
+                    // }
+                    if(SELECTED.name.includes('R-Info')){
+                        console.log('YES R-INFO CLICKED');
+                        init.scene.traverse(function(child){
+                            if(child.isMesh){
+                                if(child.name.includes('Range') ){
+                                  child.position.y = 0;
+                                }
+                            }
+                        });
+                        // SELECTED.parent.children[2].scale.set(3.57,3.75,3.75);
+                        // SELECTED.parent.children[2].material.opacity = 0.3;
+                        // SELECTED.parent.children[2].visible = true;
+                        //  SELECTED.parent.children[2].position.y = 0;
+                    }if(SELECTED.name.includes('Info')){
+                        console.log('INFO-FLAG-CLICKED.....');
+                    }*/
            
         }
           
@@ -202,9 +234,7 @@ function ondblclick(){
     init.scene.traverse(function(child){
         if(child.isMesh){
             if(child.name.includes('Range')){
-                // console.log('YES...',child);
-                child.position.y = 10;
-                child.opacity = 0;
+              child.position.y=2;
             }
         }
     });
@@ -253,9 +283,9 @@ class objLoad {
     }
     roomsModel() {
         this.loader = new GLTFLoader(manager);
-        this.dracoLoader = new DRACOLoader();
-        this.dracoLoader.setDecoderPath("js/libs/draco/");//copypasted draco/gltf/all files in public folder
-        this.loader.setDRACOLoader( this.dracoLoader );
+        // this.dracoLoader = new DRACOLoader();
+        // this.dracoLoader.setDecoderPath("js/libs/draco/");//copypasted draco/gltf/all files in public folder
+        // this.loader.setDRACOLoader( this.dracoLoader );
         this.loader.load(gltfpath, gltf => {
             this.mesh = gltf.scene;
             this.mesh.traverse(function (child) {
@@ -285,22 +315,31 @@ class objLoad {
             this.mesh = gltf.scene;
             this.mesh.name = _data;
             currentProp = _data;
-            spriteArr.push(this.mesh);
-            if(currentRoomSelection == 'smallRoom')spriteArr.push(this.mesh);
-            else if(currentRoomSelection == 'mediumRoom')mediumArr.push(this.mesh);
-            else if(currentRoomSelection == 'largeRoom')largeArr.push(this.mesh);
+            // spriteArr.push(this.mesh);
+            if(currentRoomSelection == 'smallRoom'){
+                smallArr.push(this.mesh);
+                console.log('small Array-->',smallArr);
+            }
+            else if(currentRoomSelection == 'mediumRoom'){               
+                mediumArr.push(this.mesh);
+                console.log('medium Room-->',mediumArr);
+            }
+            else if(currentRoomSelection == 'largeRoom'){               
+                largeArr.push(this.mesh);
+                console.log('large Room-->',largeArr);
+            }
             this.mesh.traverse(function (child) {
                 if (child.isMesh) {
-                    if(child.name.includes('Range')){
-                        // console.log('CHILD-->',child);
-                        child.material.transparent = true;
-                        child.material.opacity = 0.3;
-                        //child.visible = false;
-                        //  child.position.y=10;
+                    if(child.name.includes('Range')){                        
+                       // child.material.transparent = true;
+                        // child.material.opacity = 0.3; 
+                        // child.visible = false                   
+                        // child.position.y=2;
+                        child.visible = false;
                     }
                     if(child.name.includes('Info') || child.name.includes('R-Info')){
-                        console.log('INFO-R-Info-->',child);
-                        child.visible = false;
+                       // console.log('INFO-R-Info-->',child);
+                         child.visible = false;
                     }
                 }
             });
