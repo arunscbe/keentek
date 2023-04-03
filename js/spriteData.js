@@ -41,13 +41,13 @@ export let cameraData = {
 export const props = {
     'smallRoom':{   
         'SmallProps_PolyStudio_X30':{
-            'props':'assets/props/small_room/SmallProps_PolyStudio_X30-01.glb'
+            'props':'assets/props/small_room/SmallProps_PolyStudio_X30.glb'
         },
         'SmallProps_LogitechRally_BarMini':{
-            'props':'assets/props/small_room/SmallProps_LogitechRally_BarMini-01.glb',           
+            'props':'assets/props/small_room/SmallProps_LogitechRally_BarMini.glb',           
         },
         'SmallProps_Yealink_A20':{
-            'props':'assets/props/small_room/SmallProps_Yealink_A20-01.glb',           
+            'props':'assets/props/small_room/SmallProps_Yealink_A20.glb',           
         }     
     },
     'mediumRoom':{   

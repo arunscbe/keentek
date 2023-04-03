@@ -63,6 +63,7 @@ $(document).ready(function () {
             if(currentRoomSelection == room){
                 if(currentProp != ''){
                      let _A = init.scene.getObjectByName(currentProp);
+                     console.log(_A.name);
                          init.scene.remove(_A);
                          array.pop();
                   }
@@ -185,44 +186,11 @@ let onDocumentMouseDown = (event) =>{
                          SELECTED.children[0].visible = true;
                          SELECTED.children[1].visible = true;
                     }else if(SELECTED.name.includes('R-Info')){
-                        console.log( SELECTED.parent.children[2]);
-                        // SELECTED.parent.children[2].visible = true;
-                        // SELECTED.parent.children[2].position.y = 0;
+                        SELECTED.parent.children[2].visible = true;
                         SELECTED.parent.children[2].position.y = 0;
                     }else if(SELECTED.name.includes('Info')){
                         console.log('INFO-FLAG-CLICKED.....');
-                    }
-                    /* if(SELECTED.children !== '' ){
-                        
-                        // if(SELECTED.children[0].name.includes('Info') && SELECTED.children[1].name.includes('R-Info')){
-                            SELECTED.traverse(function(child){
-                                if(child.isMesh){
-                                    if(child.name.includes('R-Info') || child.name.includes('Info') ){
-                                      child.visible = true;
-                                    }
-                                }
-                            });
-                         }
-                       
-                        // SELECTED.children[0].scale.x = 100;
-                    // }
-                    if(SELECTED.name.includes('R-Info')){
-                        console.log('YES R-INFO CLICKED');
-                        init.scene.traverse(function(child){
-                            if(child.isMesh){
-                                if(child.name.includes('Range') ){
-                                  child.position.y = 0;
-                                }
-                            }
-                        });
-                        // SELECTED.parent.children[2].scale.set(3.57,3.75,3.75);
-                        // SELECTED.parent.children[2].material.opacity = 0.3;
-                        // SELECTED.parent.children[2].visible = true;
-                        //  SELECTED.parent.children[2].position.y = 0;
-                    }if(SELECTED.name.includes('Info')){
-                        console.log('INFO-FLAG-CLICKED.....');
-                    }*/
-           
+                    }           
         }
           
     }    
@@ -234,7 +202,8 @@ function ondblclick(){
     init.scene.traverse(function(child){
         if(child.isMesh){
             if(child.name.includes('Range')){
-              child.position.y=2;
+              child.position.y=20;
+              child.visible = false;
             }
         }
     });
@@ -256,10 +225,10 @@ let cameraAnim = (data)=>{
         init.cameraMain.updateProjectionMatrix();	
         init.controls.target = init.camPoint.position;		
     },onComplete:function(){
-        if(currentRoomSelection === '')cameraLimit(5,300);
-        else if(currentRoomSelection === 'smallRoom')cameraLimit(5,20);
-        else if(currentRoomSelection === 'mediumRoom')cameraLimit(5,22);
-        else if(currentRoomSelection === 'largeRoom')cameraLimit(5,38);
+        // if(currentRoomSelection === '')cameraLimit(5,300);
+        // else if(currentRoomSelection === 'smallRoom')cameraLimit(5,20);
+        // else if(currentRoomSelection === 'mediumRoom')cameraLimit(5,22);
+        // else if(currentRoomSelection === 'largeRoom')cameraLimit(5,38);
     }});
 }
 let spriteVis = (sprite,time,val) =>{
@@ -331,10 +300,10 @@ class objLoad {
             this.mesh.traverse(function (child) {
                 if (child.isMesh) {
                     if(child.name.includes('Range')){                        
-                       // child.material.transparent = true;
-                        // child.material.opacity = 0.3; 
+                       child.material.transparent = true;
+                        child.material.opacity = 0.3; 
                         // child.visible = false                   
-                        // child.position.y=2;
+                        child.position.y=10;
                         child.visible = false;
                     }
                     if(child.name.includes('Info') || child.name.includes('R-Info')){
