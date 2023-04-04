@@ -172,7 +172,10 @@ let onDocumentMouseDown = (event) =>{
     raycaster.setFromCamera( mouse, init.cameraMain );
     if(currentRoomSelection === '')intersects = raycaster.intersectObjects( spriteArr,true );
      if(currentRoomSelection === 'smallRoom' )intersects = raycaster.intersectObjects( smallArr,true );
-     if(currentRoomSelection === 'mediumRoom')intersects = raycaster.intersectObjects( mediumArr,true );     
+     if(currentRoomSelection === 'mediumRoom'){
+        intersects = raycaster.intersectObjects( mediumArr,true ); 
+        // console.log('mediumArr---<>',mediumArr);
+     }    
      if(currentRoomSelection === 'largeRoom')intersects = raycaster.intersectObjects( largeArr,true );    
     if ( intersects.length > 0 ) {
         SELECTED = intersects[ 0 ].object;
@@ -181,13 +184,18 @@ let onDocumentMouseDown = (event) =>{
                     cameraAnim(SELECTED.name);
                     currentRoomSelection = SELECTED.name; 
               }else if(SELECTED.type == 'Mesh'){
-                console.log( SELECTED);
                     if(SELECTED.children.length != 0){                    
                          SELECTED.children[0].visible = true;
                          SELECTED.children[1].visible = true;
+                         SELECTED.children[2].visible = true;
+                         setTimeout(function(){               
+                                TweenMax.to( SELECTED.children[0].material,3,{opacity:0,onUpdate:function(){
+                                    SELECTED.children[0].material.needsUpdate = true;
+                                }})                           
+                         },500) 
                     }else if(SELECTED.name.includes('R-Info')){
-                        SELECTED.parent.children[2].visible = true;
-                        SELECTED.parent.children[2].position.y = 0;
+                        SELECTED.parent.children[3].visible = true;
+                        SELECTED.parent.children[3].position.y = 0;
                     }else if(SELECTED.name.includes('Info')){
                         console.log('INFO-FLAG-CLICKED.....');
                     }           
@@ -287,15 +295,16 @@ class objLoad {
             // spriteArr.push(this.mesh);
             if(currentRoomSelection == 'smallRoom'){
                 smallArr.push(this.mesh);
-                console.log('small Array-->',smallArr);
+                // console.log('small Array-->',smallArr);
             }
-            else if(currentRoomSelection == 'mediumRoom'){               
+            else if(currentRoomSelection == 'mediumRoom'){   
+                // console.log(currentRoomSelection)            
                 mediumArr.push(this.mesh);
-                console.log('medium Room-->',mediumArr);
+                // console.log('medium Room-->',mediumArr);
             }
             else if(currentRoomSelection == 'largeRoom'){               
                 largeArr.push(this.mesh);
-                console.log('large Room-->',largeArr);
+                // console.log('large Room-->',largeArr);
             }
             this.mesh.traverse(function (child) {
                 if (child.isMesh) {
@@ -304,11 +313,12 @@ class objLoad {
                         child.material.opacity = 0.3; 
                         // child.visible = false                   
                         child.position.y=10;
-                        child.visible = false;
-                    }
-                    if(child.name.includes('Info') || child.name.includes('R-Info')){
-                       // console.log('INFO-R-Info-->',child);
                          child.visible = false;
+                    }
+                    if(child.name.includes('Info') || child.name.includes('R-Info') || child.name.includes('Highlights')){
+                       // console.log('INFO-R-Info-->',child);
+                       child.material.transparent = true;
+                          child.visible = false;
                     }
                 }
             });

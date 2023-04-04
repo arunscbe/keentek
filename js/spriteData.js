@@ -50,16 +50,16 @@ export const props = {
             'props':'assets/props/small_room/SmallProps_Yealink_A20.glb',           
         }     
     },
-    'mediumRoom':{   
-        'MediumProps_Polystudio_x50':{
-            "props":'assets/props/medium_room/MediumProps_Polystudio_x50.glb',           
+    'mediumRoom':{         
+        "MediumProps_LogitechRallyBar":{
+            "props":'assets/props/medium_room/01/MediumProps_LogitechRallyBar.glb',           
         },
         'MediumProps_Neatbar':{
-            "props":'assets/props/medium_room/MediumProps_Neatbar.glb',           
+            "props":'assets/props/medium_room/01/MediumProps_Neatbar.glb',           
         },
-        "MediumProps_LogitechRally_Bar":{
-            "props":'assets/props/medium_room/MediumProps_LogitechRally_Bar.glb',           
-        }     
+        'MediumProps_Polystudio_x50':{
+            "props":'assets/props/medium_room/01/MediumProps_Polystudio_x50.glb',           
+        },  
     },
     'largeRoom':{   
         'LargeProps_PolyStudio_X70':{
