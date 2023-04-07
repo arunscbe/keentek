@@ -185,15 +185,14 @@ let onDocumentMouseDown = (event) =>{
                     currentRoomSelection = SELECTED.name; 
               }else if(SELECTED.type == 'Mesh'){
                     if(SELECTED.children.length != 0){     
-                         SELECTED.children[0].visible = true;
-                        //  SELECTED.children[1].visible = true;
+                         SELECTED.children[1].visible = true;
                          SELECTED.children[2].visible = true;
                          SELECTED.children[3].visible = true;
                          setTimeout(function(){               
-                                TweenMax.to( SELECTED.children[0].material,3,{opacity:0,onUpdate:function(){  
-                                    SELECTED.children[0].material.needsUpdate = true;                 
+                                TweenMax.to( SELECTED.children[1].material,3,{opacity:0,onUpdate:function(){  
+                                    // SELECTED.children[1].material.needsUpdate = true;                 
                                 },onComplete:function(){
-                                    SELECTED.children[0].visible = false;
+                                    // SELECTED.children[1].visible = false;
                                 }})                           
                          },500) 
                     }else if(SELECTED.name.includes('R-Info')){
@@ -329,7 +328,17 @@ class objLoad {
                     }if(child.name.includes('Highlights')){
                         child.material.emissive = new THREE.Color(1, 1, 1);
                         child.material.transparent = true;
-                        child.visible = false;
+                         child.visible = false;                       
+                    }if(child.name.includes('CamPop')){
+                        setTimeout(function(){     
+                            child.material.emissive = new THREE.Color(1, 1, 1);
+                            child.material.transparent = true;          
+                            TweenMax.to( child.material,3,{opacity:0,onUpdate:function(){  
+                                child.material.needsUpdate = true;                 
+                            },onComplete:function(){
+                                child.visible = false;
+                            }})                           
+                     },1000)
                     }
                 }
             });
