@@ -184,13 +184,14 @@ let onDocumentMouseDown = (event) =>{
                     cameraAnim(SELECTED.name);
                     currentRoomSelection = SELECTED.name; 
               }else if(SELECTED.type == 'Mesh'){
-                    if(SELECTED.children.length != 0){                    
+                    if(SELECTED.children.length != 0){
+                        // console.log('SELECTED.children[0]-->',SELECTED.children[0]);                    
                          SELECTED.children[0].visible = true;
                          SELECTED.children[1].visible = true;
                          SELECTED.children[2].visible = true;
                          setTimeout(function(){               
                                 TweenMax.to( SELECTED.children[0].material,3,{opacity:0,onUpdate:function(){
-                                    SELECTED.children[0].material.needsUpdate = true;
+                                    // SELECTED.children[0].material.needsUpdate = true;
                                 }})                           
                          },500) 
                     }else if(SELECTED.name.includes('R-Info')){
@@ -319,7 +320,7 @@ class objLoad {
                        // console.log('INFO-R-Info-->',child);
                        child.material.transparent = true;
                           child.visible = false;
-                    }
+                    }   
                 }
             });
             this.mesh.scale.set(10, 10, 10);
