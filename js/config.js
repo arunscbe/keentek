@@ -184,19 +184,21 @@ let onDocumentMouseDown = (event) =>{
                     cameraAnim(SELECTED.name);
                     currentRoomSelection = SELECTED.name; 
               }else if(SELECTED.type == 'Mesh'){
-                    if(SELECTED.children.length != 0){
-                        // console.log('SELECTED.children[0]-->',SELECTED.children[0]);                    
+                    if(SELECTED.children.length != 0){     
                          SELECTED.children[0].visible = true;
-                         SELECTED.children[1].visible = true;
+                        //  SELECTED.children[1].visible = true;
                          SELECTED.children[2].visible = true;
+                         SELECTED.children[3].visible = true;
                          setTimeout(function(){               
-                                TweenMax.to( SELECTED.children[0].material,3,{opacity:0,onUpdate:function(){
-                                    // SELECTED.children[0].material.needsUpdate = true;
+                                TweenMax.to( SELECTED.children[0].material,3,{opacity:0,onUpdate:function(){  
+                                    SELECTED.children[0].material.needsUpdate = true;                 
+                                },onComplete:function(){
+                                    SELECTED.children[0].visible = false;
                                 }})                           
                          },500) 
                     }else if(SELECTED.name.includes('R-Info')){
-                        SELECTED.parent.children[3].visible = true;
-                        SELECTED.parent.children[3].position.y = 0;
+                        SELECTED.parent.children[4].visible = true;
+                        SELECTED.parent.children[4].position.y = 0;
                     }else if(SELECTED.name.includes('Info')){
                         console.log('INFO-FLAG-CLICKED.....');
                     }           
@@ -316,11 +318,19 @@ class objLoad {
                         child.position.y=10;
                          child.visible = false;
                     }
-                    if(child.name.includes('Info') || child.name.includes('R-Info') || child.name.includes('Highlights')){
+                    if(child.name.includes('Info') || child.name.includes('R-Info')){
                        // console.log('INFO-R-Info-->',child);
                        child.material.transparent = true;
-                          child.visible = false;
+                       child.visible = false;
                     }   
+                    if(child.name.includes('Shadow')){
+                        child.material.transparent = true;
+                        child.material.opacity = 0.5; 
+                    }if(child.name.includes('Highlights')){
+                        child.material.emissive = new THREE.Color(1, 1, 1);
+                        child.material.transparent = true;
+                        child.visible = false;
+                    }
                 }
             });
             this.mesh.scale.set(10, 10, 10);
