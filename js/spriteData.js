@@ -52,13 +52,13 @@ export const props = {
     },
     'mediumRoom':{         
         "MediumProps_LogitechRallyBar":{
-            "props":'assets/props/medium_room/01/MediumProps_LogitechRallyBar.glb',           
+            "props":'assets/props/medium_room/MediumProps_LogitechRallyBar.glb',           
         },
         'MediumProps_Neatbar':{
-            "props":'assets/props/medium_room/01/MediumProps_Neatbar.glb',           
+            "props":'assets/props/medium_room/MediumProps_Neatbar.glb',           
         },
         'MediumProps_Polystudio_x50':{
-            "props":'assets/props/medium_room/01/MediumProps_Polystudio_x50.glb',           
+            "props":'assets/props/medium_room/MediumProps_Polystudio_x50.glb',           
         },  
     },
     'largeRoom':{   
