@@ -235,10 +235,10 @@ let cameraAnim = (data)=>{
         init.cameraMain.updateProjectionMatrix();	
         init.controls.target = init.camPoint.position;		
     },onComplete:function(){
-        // if(currentRoomSelection === '')cameraLimit(5,300);
-        // else if(currentRoomSelection === 'smallRoom')cameraLimit(5,20);
-        // else if(currentRoomSelection === 'mediumRoom')cameraLimit(5,22);
-        // else if(currentRoomSelection === 'largeRoom')cameraLimit(5,38);
+        if(currentRoomSelection === '')cameraLimit(5,300);
+        else if(currentRoomSelection === 'smallRoom')cameraLimit(5,20);
+        else if(currentRoomSelection === 'mediumRoom')cameraLimit(5,22);
+        else if(currentRoomSelection === 'largeRoom')cameraLimit(5,38);
     }});
 }
 let spriteVis = (sprite,time,val) =>{
