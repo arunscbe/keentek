@@ -184,6 +184,7 @@ let onDocumentMouseDown = (event) =>{
                     cameraAnim(SELECTED.name);
                     currentRoomSelection = SELECTED.name; 
               }else if(SELECTED.type == 'Mesh'){
+               
                     if(SELECTED.children.length != 0){     
                          SELECTED.children[1].visible = true;
                          SELECTED.children[2].visible = true;
@@ -200,7 +201,9 @@ let onDocumentMouseDown = (event) =>{
                         SELECTED.parent.children[4].position.y = 0;
                     }else if(SELECTED.name.includes('Info')){
                         console.log('INFO-FLAG-CLICKED.....');
-                    }           
+                    }else if(SELECTED.name.includes('Icon')){
+                        console.log('ICON-INFO.....');
+                    }    
         }
           
     }    
