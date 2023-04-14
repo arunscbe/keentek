@@ -166,6 +166,7 @@ class sceneSetup {
 //RAYCASTING
 let onDocumentMouseDown = (event) =>{
     event.preventDefault();
+    // console.log(smallArr);
     const rect = init.renderer.domElement.getBoundingClientRect(); 
     mouse.x = ( ( event.clientX - rect.left ) / ( rect.right - rect.left ) ) * 2 - 1;
     mouse.y = - ( ( event.clientY - rect.top ) / ( rect.bottom - rect.top) ) * 2 + 1;
@@ -183,32 +184,44 @@ let onDocumentMouseDown = (event) =>{
                     spriteVis(spriteArr,1000,0);
                     cameraAnim(SELECTED.name);
                     currentRoomSelection = SELECTED.name; 
+                  
               }else if(SELECTED.type == 'Mesh'){
-               
-                    if(SELECTED.children.length != 0){     
-                         SELECTED.children[1].visible = true;
-                         SELECTED.children[2].visible = true;
-                         SELECTED.children[3].visible = true;
-                         setTimeout(function(){               
-                                TweenMax.to( SELECTED.children[1].material,3,{opacity:0,onUpdate:function(){  
-                                    // SELECTED.children[1].material.needsUpdate = true;                 
-                                },onComplete:function(){
-                                    // SELECTED.children[1].visible = false;
-                                }})                           
-                         },500) 
+                    if(SELECTED.children.length != 0){    
+                        if(SELECTED.children[1].name.includes('ControllerIn') || SELECTED.children[0].name.includes('ContollerHigh') ){
+                            SELECTED.children[0].visible = true;
+                            SELECTED.children[1].visible = true;
+                            hightLightsDisplay(SELECTED.children[0]);
+                        }else if(SELECTED.children[1].name.includes('Highlights') || SELECTED.children[2].name.includes('Info') || SELECTED.children[2].name.includes('R-Info') ){
+                            SELECTED.children[1].visible = true;
+                            SELECTED.children[2].visible = true;
+                            SELECTED.children[3].visible = true;
+                            hightLightsDisplay(SELECTED.children[1]);
+                        }
+                         
                     }else if(SELECTED.name.includes('R-Info')){
                         SELECTED.parent.children[4].visible = true;
                         SELECTED.parent.children[4].position.y = 0;
+                        SELECTED.parent.children[4].position.z = 0;
                     }else if(SELECTED.name.includes('Info')){
                         console.log('INFO-FLAG-CLICKED.....');
-                    }else if(SELECTED.name.includes('Icon')){
+                    }/*else if(SELECTED.name.includes('Icon')){
                         console.log('ICON-INFO.....');
-                    }    
+                    }*/else if(SELECTED.name.includes('ControllerIn')){
+                        console.log('ControllerInfo CLICKED.....');
+                    }   
         }
           
     }    
 }
-
+function hightLightsDisplay(data){
+    setTimeout(function(){               
+        TweenMax.to( data.material,3,{opacity:0,onUpdate:function(){  
+            // SELECTED.children[1].material.needsUpdate = true;                 
+        },onComplete:function(){
+            // SELECTED.children[1].visible = false;
+        }})                           
+ },500) 
+}
 window.addEventListener('resize', onWindowResize, false);
 window.addEventListener('dblclick', ondblclick, false);
 function ondblclick(){
@@ -216,6 +229,7 @@ function ondblclick(){
         if(child.isMesh){
             if(child.name.includes('Range')){
               child.position.y=20;
+              child.position.z = 0;
               child.visible = false;
             }
         }
@@ -241,7 +255,7 @@ let cameraAnim = (data)=>{
         if(currentRoomSelection === '')cameraLimit(5,300);
         else if(currentRoomSelection === 'smallRoom')cameraLimit(5,20);
         else if(currentRoomSelection === 'mediumRoom')cameraLimit(5,22);
-        else if(currentRoomSelection === 'largeRoom')cameraLimit(5,38);
+        else if(currentRoomSelection === 'largeRoom')cameraLimit(0,38);//5,38
     }});
 }
 let spriteVis = (sprite,time,val) =>{
@@ -317,10 +331,11 @@ class objLoad {
                        child.material.transparent = true;
                         child.material.opacity = 0.3; 
                         // child.visible = false                   
-                        child.position.y=10;
-                         child.visible = false;
+                        child.position.y=0;
+                        child.position.z=100;
+                        //  child.visible = false;
                     }
-                    if(child.name.includes('Info') || child.name.includes('R-Info')){
+                    if(child.name.includes('Info') || child.name.includes('R-Info') || child.name.includes('ControllerIn') ){
                        // console.log('INFO-R-Info-->',child);
                        child.material.transparent = true;
                        child.visible = false;
@@ -328,7 +343,7 @@ class objLoad {
                     if(child.name.includes('Shadow')){
                         child.material.transparent = true;
                         child.material.opacity = 0.5; 
-                    }if(child.name.includes('Highlights')){
+                    }if(child.name.includes('Highlights')|| child.name.includes('ContollerHigh')){
                         child.material.emissive = new THREE.Color(1, 1, 1);
                         child.material.transparent = true;
                          child.visible = false;                       
@@ -345,6 +360,7 @@ class objLoad {
                     }
                 }
             });
+            console.log(this.mesh);
             this.mesh.scale.set(10, 10, 10);
              init.scene.add(this.mesh);
            
