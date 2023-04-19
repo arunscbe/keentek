@@ -21,12 +21,12 @@ export let spriteData = [
 ]
 export let cameraData = {
     "largeRoom": {
-        "cubePosX":-35, "cubePosY":11, "cubePosZ":0,
-        "camPosX": -30,"camPosY": 0,"camPosZ": 1
+        "cubePosX":-60, "cubePosY":11, "cubePosZ":0,
+        "camPosX": -50,"camPosY": 0,"camPosZ": 1
     },
     "mediumRoom": {
         "cubePosX":60, "cubePosY":12, "cubePosZ":90,
-        "camPosX": 80,"camPosY": 11,"camPosZ": 90
+        "camPosX": 70,"camPosY": 11,"camPosZ": 90
     },
     "smallRoom": {
         "cubePosX":-35, "cubePosY":12, "cubePosZ":-80,

@@ -122,7 +122,7 @@ class sceneSetup {
     
     }
     addingCube() {
-        this.geo = new THREE.BoxBufferGeometry(.01, .01, .01);
+        this.geo = new THREE.BoxBufferGeometry(.001, .001, .001);
         this.mat = material.cube;
         this.camPoint = new THREE.Mesh(this.geo, this.mat);
         this.scene.add(this.camPoint);
@@ -332,7 +332,7 @@ class objLoad {
                         child.material.opacity = 0.3; 
                         // child.visible = false                   
                         child.position.y=0;
-                        child.position.z=100;
+                        child.position.z=1000;
                         //  child.visible = false;
                     }
                     if(child.name.includes('Info') || child.name.includes('R-Info') || child.name.includes('ControllerIn') ){
