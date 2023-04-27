@@ -21,7 +21,7 @@ export let spriteData = [
 ]
 export let cameraData = {
     "largeRoom": {
-        "cubePosX":-60, "cubePosY":11, "cubePosZ":0,
+        "cubePosX":-60, "cubePosY":15, "cubePosZ":0,
         "camPosX": -50,"camPosY": 0,"camPosZ": 1
     },
     "mediumRoom": {
